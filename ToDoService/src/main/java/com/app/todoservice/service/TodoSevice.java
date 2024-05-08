@@ -12,5 +12,6 @@ public interface TodoSevice {
     String updateItem(ItemRequestDTO updateItem, long itemId);
     String deleteItemById(long id);
     ItemRequestDTO findById(long id);
-    String reActiveItem(long id);
+    String reactivateItem(long id);
+    String deactivateItem(long id);
 }
