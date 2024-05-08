@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -73,16 +72,15 @@ public class TodoServiceImpl implements TodoSevice {
         if (id > 0) {
             Items item = itemsRepo.findById(id)
                     .orElseThrow(() -> new ItemNotFoundException("No item with id " + id));
-            ItemDetails itemDetails = item.getItemDetails();
-            if (itemDetails.isStatus()) {
-                itemDetails.setStatus(false);
-                itemDetailsRepo.save(itemDetails);
-                return "item deleted";
-            } else
-                throw new ConflicException("already not active");
+
+            itemsRepo.deleteById(id);
+            itemDetailsRepo.deleteById(item.getItemDetails().getId());
+
+            return "item deleted";
         }
         throw new IllegalArgumentException("Invalid id " + id);
     }
+
 
     @Override
     public ItemRequestDTO findById(long id) {
@@ -96,7 +94,7 @@ public class TodoServiceImpl implements TodoSevice {
     }
 
     @Override
-    public String reActiveItem(long id) {
+    public String reactivateItem(long id) {
         if (id > 0) {
             Items item = itemsRepo.findById(id)
                     .orElseThrow(() -> new ItemNotFoundException("No item with id " + id));
@@ -110,13 +108,29 @@ public class TodoServiceImpl implements TodoSevice {
         }
         throw new IllegalArgumentException("Invalid id " + id);
     }
+
+    @Override
+    public String deactivateItem(long id) {
+        if (id > 0) {
+            Items item = itemsRepo.findById(id)
+                    .orElseThrow(() -> new ItemNotFoundException("No item with id " + id));
+            ItemDetails itemDetails = item.getItemDetails();
+            if (itemDetails.isStatus()) {
+                itemDetails.setStatus(false);
+                itemDetailsRepo.save(itemDetails);
+                return "item deactivated";
+            } else
+                throw new ConflicException("already not active");
+        }
+        throw new IllegalArgumentException("Invalid id " + id);
+    }
 }
 // Develope DB
 // Cruds for items
 //  Add a global exception handlers to handle exceptions (Not_Found Exception for example)
-// TODO Use best practices in APIs design while designing these APIs
-// TODO Document with swagger
+//  Use best practices in APIs design while designing these APIs
+//  Document with swagger
 // TODO Secure these apis with spring security by using JWT when calling these APIs
 // TODO Make unit testing for these APIs using JUnit5
 // TODO Make a backend validation on the attributes
-// TODO Make a Postman Collection with the above APIs
+// Make a Postman Collection with the above APIs
