@@ -13,17 +13,17 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-second-datasource:
-  datasource:
-    url: jdbc:mysql://localhost:3307/todo_user
-    username: root
-    password: 12345
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+#second-datasource:
+#  datasource:
+#    url: jdbc:mysql://localhost:3307/todo_user
+#    username: root
+#    password: 12345
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+# jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        format_sql: true

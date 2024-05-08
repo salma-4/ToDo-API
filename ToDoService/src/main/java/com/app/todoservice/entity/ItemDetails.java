@@ -4,32 +4,31 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
+@Entity
+@Table(name = "Items_details", schema = "todo")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class ItemDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @Entity
-    @Table(name = "Items_details", schema = "todo")
-    @Setter
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @ToString
-    public class ItemDetails {
+    @Column(name = "description", nullable = false)
+    private String description;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
-        @Column(name = "description")
-        private String description;
+    @Column(name = "priority")
+    private int priority;
 
-        @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-        private Timestamp createdAt;
-
-        @Column(name = "priority")
-        private int priority;
-
-        @Column(name = "status", length = 50)
-        private String status;
-    }
+    @Column(name = "status", nullable = false)
+    private boolean status;
+}

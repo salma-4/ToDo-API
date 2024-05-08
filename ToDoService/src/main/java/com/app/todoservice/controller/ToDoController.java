@@ -1,40 +1,64 @@
 package com.app.todoservice.controller;
 
-import com.app.todoservice.model.ItemsDTO;
+import com.app.todoservice.model.items.ItemRequestDTO;
+import com.app.todoservice.model.items.ItemResponseDTO;
 import com.app.todoservice.service.TodoSevice;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/todo/item")
+@RequiredArgsConstructor
 public class ToDoController {
-    @Autowired
-    TodoSevice todoSevice;
-    @GetMapping("/itemByTitle/{title}")
-    public ItemsDTO findByTitel(@PathVariable String title){
-        return todoSevice.findByTitle(title);
+
+    private final TodoSevice todoSevice;
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<ItemResponseDTO> findByTitel(@PathVariable String title) {
+        ItemResponseDTO item = todoSevice.findByTitle(title);
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
-    @GetMapping("/itemById/{id}")
-    public ItemsDTO findById(@PathVariable int id){
-      return todoSevice.findById(id);
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<ItemRequestDTO> findById(@PathVariable long id) {
+
+        ItemRequestDTO item = todoSevice.findById(id);
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
+
     @GetMapping("/items")
-    public List<ItemsDTO> getAll(){
-        return todoSevice.getAllToDoItems();
+    public ResponseEntity<List<ItemResponseDTO>> getAll() {
+        List<ItemResponseDTO> items = todoSevice.getAllToDoItems();
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
+
     @PostMapping()
-    public String addItem(@RequestBody ItemsDTO newItem) {
-      //  System.out.println(newItem.getItemsDetails().getDescription());
-        return todoSevice.addNewItem(newItem);
+    public ResponseEntity<String> addItem(@RequestBody ItemRequestDTO newItem) {
+        System.out.println("item "+newItem);
+        String message = todoSevice.addNewItem(newItem);
+        return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
-    public String updateItem(@RequestBody ItemsDTO itemsDTO, @PathVariable int id){
-        return todoSevice.updateItem(itemsDTO,id);
+
+    @PutMapping("id/{id}/item")
+    public ResponseEntity<String> updateItem(@RequestBody ItemRequestDTO itemResponseDTO, @PathVariable long id) {
+        String message = todoSevice.updateItem(itemResponseDTO, id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    @DeleteMapping("/{id}")
-    public String deleteItem(@PathVariable int id){
-        return todoSevice.deleteItemById(id);
+
+    @DeleteMapping("id/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable long id) {
+        String message = todoSevice.deleteItemById(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @GetMapping("/id/{id}/avtivation")
+    public ResponseEntity<String> activateItem(@PathVariable long id) {
+        String message = todoSevice.reActiveItem(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
