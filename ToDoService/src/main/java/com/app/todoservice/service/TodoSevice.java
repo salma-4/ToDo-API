@@ -1,15 +1,16 @@
 package com.app.todoservice.service;
 
-import com.app.todoservice.entity.Items;
-import com.app.todoservice.model.ItemsDTO;
+import com.app.todoservice.model.items.ItemRequestDTO;
+import com.app.todoservice.model.items.ItemResponseDTO;
 
 import java.util.List;
 
 public interface TodoSevice {
-    ItemsDTO findByTitle(String title);
-    List<ItemsDTO> getAllToDoItems();
-    String addNewItem(ItemsDTO newItem);
-    String updateItem(ItemsDTO updateItem,int itemId);
-    String deleteItemById(int id);
-    ItemsDTO findById(int id);
+    ItemResponseDTO findByTitle(String title);
+    List<ItemResponseDTO> getAllToDoItems();
+    String addNewItem(ItemRequestDTO newItem);
+    String updateItem(ItemRequestDTO updateItem, long itemId);
+    String deleteItemById(long id);
+    ItemRequestDTO findById(long id);
+    String reActiveItem(long id);
 }

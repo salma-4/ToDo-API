@@ -2,19 +2,22 @@ package com.app.todoservice.mapper;
 
 import com.app.todoservice.entity.ItemDetails;
 import com.app.todoservice.entity.Items;
-import com.app.todoservice.model.ItemDetailsDTO;
-import com.app.todoservice.model.ItemsDTO;
+import com.app.todoservice.model.items.ItemDetailsDTO;
+import com.app.todoservice.model.items.ItemRequestDTO;
+import com.app.todoservice.model.items.ItemResponseDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ItemsMap {
-    Items toEntity(ItemsDTO itemsDTO);
-   ItemsDTO toDto(Items items);
+    Items toEntity(ItemRequestDTO item);
 
-  List<ItemsDTO> toDto(List<Items> items);
-  ItemDetails toEntity(ItemDetailsDTO itemDetailsDTO);
+    ItemResponseDTO toDto(Items items);
+
+    List<ItemResponseDTO> toDto(List<Items> items);
+
+    ItemDetails toEntity(ItemDetailsDTO itemDetailsDTO);
+    ItemRequestDTO toRequestDTO(Items item);
 
 }

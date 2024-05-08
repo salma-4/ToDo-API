@@ -1,25 +1,19 @@
 package com.app.todoservice.entity;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Table(name = "items",schema = "todo")
-@Setter
-@Getter
+@Table(name = "items", schema = "todo")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Items {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 //
 //    @ManyToOne
@@ -28,6 +22,6 @@ public class Items {
 
     @OneToOne
     @JoinColumn(name = "item_details_id")
-    private ItemDetails itemsDetails;
+    private ItemDetails itemDetails;
 
 }
