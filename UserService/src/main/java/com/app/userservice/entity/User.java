@@ -1,22 +1,23 @@
 package com.app.userservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity(name = "user")
-@Table
-@Setter
-@Getter
+@Entity
+@Table(name = "user")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
-    private  int id;
-    private String userName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String firstName;
+    private String lastName;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
+    private String password;
 }
