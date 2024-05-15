@@ -24,4 +24,11 @@ public class ItemDetailsDTO {
 
     @Schema(description = "Status of item if active or not ")
     private boolean status;
+
+    public ItemDetailsDTO(String description, LocalDateTime createdAt, int priority, boolean status) {
+        this.description = description;
+        this.createdAt = createdAt;
+        this.priority = priority;
+        this.status = status;
+    }
 }

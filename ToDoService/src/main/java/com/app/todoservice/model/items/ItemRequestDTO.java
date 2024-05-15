@@ -14,4 +14,9 @@ public class ItemRequestDTO {
     private String title;
     @Schema(description = "details for each item")
     private ItemDetailsDTO itemDetails;
+
+    public ItemRequestDTO(String title, ItemDetailsDTO itemDetails) {
+        this.title = title;
+        this.itemDetails = itemDetails;
+    }
 }
