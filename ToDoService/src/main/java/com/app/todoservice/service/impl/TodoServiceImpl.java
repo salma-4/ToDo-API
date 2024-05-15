@@ -131,6 +131,6 @@ public class TodoServiceImpl implements TodoSevice {
 //  Use best practices in APIs design while designing these APIs
 //  Document with swagger
 // TODO Secure these apis with spring security by using JWT when calling these APIs
-// TODO Make unit testing for these APIs using JUnit5
+// Make unit testing for these APIs using JUnit5
 // TODO Make a backend validation on the attributes
 // Make a Postman Collection with the above APIs
