@@ -1,5 +1,10 @@
 package com.app.userservice.service;
 
-public interface UserService {
+import com.app.userservice.model.UserResponseDTO;
 
+import java.util.List;
+
+public interface UserService {
+ UserResponseDTO findUserByEmail(String email);
+ List<UserResponseDTO> getAllUsers();
 }
