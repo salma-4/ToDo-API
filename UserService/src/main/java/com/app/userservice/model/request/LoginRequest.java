@@ -1,4 +1,4 @@
-package com.app.userservice.model;
+package com.app.userservice.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDTO {
-    private long id;
+@NoArgsConstructor
+@Builder
+public class LoginRequest {
     private String email;
-    private boolean enabled;
+    private String password;
+
 }
