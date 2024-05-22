@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "otp")
@@ -15,16 +15,17 @@ import java.time.LocalTime;
 public class Otp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(unique = true,nullable = false)
-    private String otp ;
+    @Column(nullable = false ,unique = true)
+    private String otp;
 
-    @Column(nullable = false)
-    private LocalTime expirationTime;
+    @Column(nullable = false )
+    private LocalDateTime expirationTime;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user ;
+    private User user;
+
 
 }
