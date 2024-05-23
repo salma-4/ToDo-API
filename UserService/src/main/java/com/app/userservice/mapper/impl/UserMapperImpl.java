@@ -26,7 +26,7 @@ public class UserMapperImpl implements UserMapper {
            return User.builder()
                    .email(user.getEmail())
                    .password(passwordEncoder.encode(user.getPassword()))
-                   .enabled(user.isEnabled())
+                   .enabled(false)
                    .build();
     }
 }

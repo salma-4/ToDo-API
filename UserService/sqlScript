@@ -1,0 +1,26 @@
+CREATE DATABASE todo_users;
+
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    enabled BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE otps (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    otp VARCHAR(6) NOT NULL,
+    expiration_time TIMESTAMP NOT NULL,
+    user_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE jwt_tokens (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    user_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expiration_date TIMESTAMP NOT NULL,
+    token_type VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

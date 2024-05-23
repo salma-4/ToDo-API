@@ -28,4 +28,13 @@ public class GlobalExceptionHandler {
                 new Date());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(value = {InvalidOtpException.class})
+    public ResponseEntity<ExceptionResponse> handleInvalidOtpException(InvalidOtpException e){
+        ExceptionResponse response = new ExceptionResponse(
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                new Date());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 }

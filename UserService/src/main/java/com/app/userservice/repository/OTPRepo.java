@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OTPRepo extends JpaRepository<Otp,Long> {
     Otp findByOtp(String otp);
+    Otp findByUserEmail(String email);
 }

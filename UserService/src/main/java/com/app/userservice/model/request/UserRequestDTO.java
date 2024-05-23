@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDTO {
-   // register
+   // todo  register add items
     private String email;
     private String password;
-    private boolean enabled;
+
 }

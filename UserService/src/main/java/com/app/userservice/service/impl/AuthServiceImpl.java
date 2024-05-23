@@ -3,15 +3,18 @@ package com.app.userservice.service.impl;
 import com.app.userservice.entity.Token;
 import com.app.userservice.entity.User;
 import com.app.userservice.exception.ConflicException;
+import com.app.userservice.exception.InvalidOtpException;
 import com.app.userservice.exception.RecordNotFoundException;
 import com.app.userservice.mapper.TokenMapper;
 import com.app.userservice.mapper.UserMapper;
 import com.app.userservice.model.request.LoginRequest;
 import com.app.userservice.model.request.UserRequestDTO;
 import com.app.userservice.model.response.AuthResponse;
+import com.app.userservice.model.response.OtpResponseDTO;
 import com.app.userservice.repository.TokenRepo;
 import com.app.userservice.repository.UserRepository;
 import com.app.userservice.service.AuthService;
+import com.app.userservice.service.OtpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
    private final UserRepository userRepository;
    private final UserMapper userMapper;
    private final BCryptPasswordEncoder passwordEncoder;
+   private final OtpService otpService;
    private final TokenRepo tokenRepo;
    private final TokenMapper tokenMapper;
    private final JwtService jwtService;
@@ -44,14 +48,29 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String register(UserRequestDTO user) {
+    public OtpResponseDTO register(UserRequestDTO user) {
       User newUser = userMapper.toEntity(user);
       Optional<User> existingUser =userRepository.findUserByEmail(user.getEmail());
        if(!existingUser.isEmpty()) {
            System.out.println(existingUser.toString());
            throw new ConflicException("Email " + user.getEmail() + " already have todo account");
 
-       }userRepository.save(newUser);
-        return "User added successfully , go and login";
+       }
+       userRepository.save(newUser);
+       OtpResponseDTO otp = otpService.generateOtp(newUser);
+        return otp;
+    }
+
+    @Override
+    public String activateAccount(OtpResponseDTO otp) {
+        User user = userRepository.findUserByEmail(otp.getUserEmail())
+                .orElseThrow(()-> new RecordNotFoundException("No user with email"+otp.getUserEmail()));
+        if(otpService.validateOtp(otp)){
+            user.setEnabled(true);
+            userRepository.save(user);
+            return "Your account successfully activated";
+        }
+        throw new InvalidOtpException("Invalid Or expired otp ");
+
     }
 }

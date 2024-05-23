@@ -4,6 +4,7 @@ package com.app.userservice.controller;
 import com.app.userservice.model.request.LoginRequest;
 import com.app.userservice.model.request.UserRequestDTO;
 import com.app.userservice.model.response.AuthResponse;
+import com.app.userservice.model.response.OtpResponseDTO;
 import com.app.userservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,13 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRequestDTO user){
-        String message = authService.register(user);
-       return new ResponseEntity<>(message,HttpStatus.CREATED);
+    public ResponseEntity<OtpResponseDTO> register(@RequestBody UserRequestDTO user){
+        OtpResponseDTO otp = authService.register(user);
+       return new ResponseEntity<>(otp,HttpStatus.CREATED);
+    }
+    @PostMapping("/activate")
+    public ResponseEntity<String> activateAccount(@RequestBody OtpResponseDTO otp){
+           String message = authService.activateAccount(otp);
+         return new ResponseEntity<>(message,HttpStatus.OK);
     }
 }
