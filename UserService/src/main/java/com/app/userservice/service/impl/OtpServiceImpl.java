@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -37,14 +38,15 @@ public class OtpServiceImpl implements OtpService {
 
     }
    //TODO user have more than one
-    @Override
-    public boolean validateOtp(OtpResponseDTO otp) {
-        Otp storedOtp = otpRepo.findByUserEmail(otp.getUserEmail());
-        return storedOtp != null &&
-                storedOtp.getOtp().equals(otp.getOtp()) &&
-                storedOtp.getExpirationTime() != null &&
-                storedOtp.getExpirationTime().isAfter(LocalDateTime.now());
-    }
+   @Override
+   public boolean validateOtp(OtpResponseDTO otp) {
+       Otp storedOtp = otpRepo.findTopByUserEmailOrderByExpirationTimeDesc(otp.getUserEmail());
+       return storedOtp != null &&
+               storedOtp.getOtp().equals(otp.getOtp()) &&
+               storedOtp.getExpirationTime() != null &&
+               storedOtp.getExpirationTime().isAfter(LocalDateTime.now());
+   }
+
     private String generateNumericOtp(int length) {
         Random random = new Random();
         StringBuilder otp = new StringBuilder();

@@ -133,7 +133,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new RecordNotFoundException("User not found"));
         Otp validOtp =otpRepo.findByOtp(otp);
-
          if (otpService.validateOtp(otpMapper.toResponseDTO(validOtp))){
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
