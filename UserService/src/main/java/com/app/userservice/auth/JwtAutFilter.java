@@ -30,20 +30,21 @@ public class JwtAutFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            String header = request.getHeader("Authentication");
+            String header = request.getHeader("Authorization");
 
             if (header == null || !header.startsWith("Bearer ")) { // no header or invalid
                 filterChain.doFilter(request, response);
+                System.out.println("yalahwaaay");
                 return;
             }
+
             String token = jwtService.retrieveToken(request);
             Claims claims = jwtService.resolveClaims(request);
             String email = claims.getSubject();
 
             // check if user is in db                                 // user already authenticated ==> from validate Jwt
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {  //first time to log in
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email); // check in db
-
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);// check in db
                 // found user ==> validate him (jwtService ? valid)
                 if (userDetails != null && jwtService.isTokenValid(token, userDetails)) {
                     // update ContextHolder

@@ -3,7 +3,9 @@ package com.app.userservice.service.impl;
 import com.app.userservice.entity.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class JwtService {
    public String generateToken(User user){
 
         return Jwts.builder()
-                .setSubject(user.getEmail())
+                .setSubject(user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis()+ACCESS_TOKEN_VALIDTY))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256,SECRET_KEY)
@@ -30,16 +32,26 @@ public class JwtService {
 
    }
    private final String AUTH_PREFIX="Bearer ";
-   public String retrieveToken(HttpServletRequest req){
-        String header = req.getHeader("Authorization");//Authorization
-        if(header !=null  && header.startsWith(AUTH_PREFIX)){
-            return header.substring(AUTH_PREFIX.length()); // 7
+    public String retrieveToken(HttpServletRequest req) {
+        String header = req.getHeader("Authorization"); // Get the Authorization header
+        if (header != null && header.startsWith(AUTH_PREFIX)) {
+            // Extract the token from the header and return it
+            return header.substring(AUTH_PREFIX.length());
         }
-        return null ;
-   }
-   public Claims retrieveClaims(String token){
-       return jwtParser.parseClaimsJwt(token).getBody();
-   }
+        return "forbidden";
+    }
+
+    public Claims retrieveClaims(String token){
+        try {
+            Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
+            Claims body = claimsJws.getBody();
+            return body;
+        } catch (JwtException e) {
+            e.printStackTrace();
+            throw new JwtException("Error parsing JWT claims: " + e.getMessage());
+        }
+    }
+
     public Claims resolveClaims(HttpServletRequest req)
     {
         try {
@@ -65,6 +77,13 @@ public class JwtService {
         } catch (Exception e) {
             throw e;
         }
+    }
+    public UserDetails getCurrentUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            return (UserDetails) authentication.getPrincipal();
+        }
+        return null;
     }
 
         public boolean isTokenValid(String token , UserDetails userDetails) {

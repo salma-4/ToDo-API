@@ -36,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
    private final TokenMapper tokenMapper;
    private final JwtService jwtService;
    private final AuthenticationManager authenticationManager;
+   private  final EmailService emailService;
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
@@ -58,6 +59,7 @@ public class AuthServiceImpl implements AuthService {
        }
        userRepository.save(newUser);
        OtpResponseDTO otp = otpService.generateOtp(newUser);
+       emailService.sendOtpEmail("salmasobhy456@gmail.com",otp.getOtp());
         return otp;
     }
 
