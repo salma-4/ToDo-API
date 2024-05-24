@@ -64,9 +64,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String activateAccount(OtpResponseDTO otp) {
-        User user = userRepository.findUserByEmail(otp.getUserEmail())
-                .orElseThrow(()-> new RecordNotFoundException("No user with email"+otp.getUserEmail()));
+    public String activateAccount(String otpCode,String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(()-> new RecordNotFoundException("No user with email"+email));
+        OtpResponseDTO otp = new OtpResponseDTO(otpCode,email);
         if(otpService.validateOtp(otp)){
             user.setEnabled(true);
             userRepository.save(user);

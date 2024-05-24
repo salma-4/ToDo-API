@@ -4,7 +4,9 @@ import com.app.userservice.entity.User;
 import com.app.userservice.exception.ConflicException;
 import com.app.userservice.exception.RecordNotFoundException;
 
+import com.app.userservice.mapper.UserMapper;
 import com.app.userservice.model.request.UserRequestDTO;
+import com.app.userservice.model.response.UserResponseDTO;
 import com.app.userservice.repository.UserRepository;
 import com.app.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final BCryptPasswordEncoder encoder;
-
+   private final UserMapper userMapper;
     @Override
     public String activateUser(long id) {
         User user = userRepository.findById(id)
@@ -81,4 +85,37 @@ public class UserServiceImpl implements UserService {
         }
         throw new IllegalArgumentException("Invalid id "+id);
     }
+
+    @Override
+    public List<UserResponseDTO> getAllUser() {
+        List<User> users = userRepository.findAll();
+        return users
+                .stream()
+                .map(user -> userMapper.toDTO(user))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDTO getUserByEmail(String email) {
+       User user = userRepository.findUserByEmail(email)
+               .orElseThrow(()-> new RecordNotFoundException("No user with email "+email));
+       return userMapper.toDTO(user);
+    }
+
+    @Override
+    public String forgetPassword(String token) {
+        return null;
+    }
+
+    @Override
+    public String changePassword(String token, String otp, String newPassword) {
+        return null;
+    }
+
+    @Override
+    public String regenerateOtp(String email) {
+        return null;
+    }
+
+
 }

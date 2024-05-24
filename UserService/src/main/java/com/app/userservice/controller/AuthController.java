@@ -9,10 +9,7 @@ import com.app.userservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    // Todo register and login
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest){
       AuthResponse response = authService.login(loginRequest);
@@ -31,9 +28,8 @@ public class AuthController {
         OtpResponseDTO otp = authService.register(user);
        return new ResponseEntity<>(otp,HttpStatus.CREATED);
     }
-    @PostMapping("/activate")
-    public ResponseEntity<String> activateAccount(@RequestBody OtpResponseDTO otp){
-           String message = authService.activateAccount(otp);
-         return new ResponseEntity<>(message,HttpStatus.OK);
+    @GetMapping("/activate")
+    public String activateUser(@RequestParam String username, @RequestHeader("OTP") String otp) {
+        return authService.activateAccount(otp,username);
     }
 }

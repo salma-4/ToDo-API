@@ -9,5 +9,5 @@ public interface AuthService {
 
     AuthResponse login (LoginRequest loginRequest);
     OtpResponseDTO register(UserRequestDTO user);
-    String activateAccount(OtpResponseDTO otp);
+    String activateAccount(String otpCode,String email);
 }
