@@ -1,20 +1,28 @@
 package com.app.userservice.service.impl;
 
+import com.app.userservice.entity.Otp;
 import com.app.userservice.entity.User;
 import com.app.userservice.exception.ConflicException;
 import com.app.userservice.exception.RecordNotFoundException;
 
+import com.app.userservice.mapper.OtpMapper;
 import com.app.userservice.mapper.UserMapper;
 import com.app.userservice.model.request.UserRequestDTO;
+import com.app.userservice.model.response.OtpResponseDTO;
 import com.app.userservice.model.response.UserResponseDTO;
+import com.app.userservice.repository.OTPRepo;
 import com.app.userservice.repository.UserRepository;
+import com.app.userservice.service.OtpService;
 import com.app.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +35,10 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final BCryptPasswordEncoder encoder;
    private final UserMapper userMapper;
+   private  final OtpService otpService;
+   private final EmailService emailService;
+   private final OTPRepo otpRepo;
+   private final OtpMapper otpMapper;
     @Override
     public String activateUser(long id) {
         User user = userRepository.findById(id)
@@ -103,18 +115,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String forgetPassword(String token) {
-        return null;
+    public String forgetPassword(String headerToken) {
+        String token = headerToken.replace("Bearer ", "");
+        String email = jwtService.extractUsername(token);
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(()-> new RecordNotFoundException("no user with emaill"));
+        OtpResponseDTO otp = otpService.generateOtp(user);
+        emailService.sendOtpEmail("salmasobhy456@gmail.com",otp.getOtp());
+        return "check your email for verification code";
+
     }
 
     @Override
-    public String changePassword(String token, String otp, String newPassword) {
-        return null;
+    public String changePassword(String headerToken, String otp, String newPassword) {
+        String token = headerToken.replace("Bearer ", "");
+        String email = jwtService.extractUsername(token);
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new RecordNotFoundException("User not found"));
+        Otp validOtp =otpRepo.findByOtp(otp);
+
+         if (otpService.validateOtp(otpMapper.toResponseDTO(validOtp))){
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+        return "Password changed successfully";
+         }
+         return "Expired otp regenerate it";
     }
 
     @Override
     public String regenerateOtp(String email) {
-        return null;
+     User user=   userRepository.findUserByEmail(email)
+             .orElseThrow(()-> new RecordNotFoundException("No user with email"+email));
+            OtpResponseDTO otp =otpService.generateOtp(user);
+        emailService.sendOtpEmail("salmasobhy456@gmail.com",otp.getOtp());
+        return "check your email for new verification code";
     }
 
 

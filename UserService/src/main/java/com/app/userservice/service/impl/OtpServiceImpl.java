@@ -36,7 +36,7 @@ public class OtpServiceImpl implements OtpService {
        );
 
     }
-
+   //TODO user have more than one
     @Override
     public boolean validateOtp(OtpResponseDTO otp) {
         Otp storedOtp = otpRepo.findByUserEmail(otp.getUserEmail());
