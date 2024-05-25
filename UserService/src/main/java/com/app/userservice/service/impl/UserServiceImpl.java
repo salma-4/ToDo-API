@@ -3,6 +3,7 @@ package com.app.userservice.service.impl;
 import com.app.userservice.entity.Otp;
 import com.app.userservice.entity.User;
 import com.app.userservice.exception.ConflicException;
+import com.app.userservice.exception.InvalidOtpException;
 import com.app.userservice.exception.RecordNotFoundException;
 
 import com.app.userservice.mapper.OtpMapper;
@@ -103,6 +104,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDTO> getAllUser() {
         List<User> users = userRepository.findAll();
+        if(users.isEmpty())
+            throw new RecordNotFoundException("No Users founded");
         return users
                 .stream()
                 .map(user -> userMapper.toDTO(user))
@@ -140,7 +143,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return "Password changed successfully";
          }
-         return "Expired otp regenerate it";
+         throw new InvalidOtpException("Expired or invalid OTP");
     }
 
     @Override

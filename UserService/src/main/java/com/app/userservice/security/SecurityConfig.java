@@ -38,25 +38,21 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            http.csrf().disable()
+                    .authorizeRequests()
+                    .requestMatchers("/app/auth/**","/swagger-ui/**", "/swagger-ui/index.html#/", "/v3/api-docs/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            return http.build();
+        }
 
-        http.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/app/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAutFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
 
 
     @Bean
