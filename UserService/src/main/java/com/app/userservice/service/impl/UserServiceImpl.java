@@ -76,10 +76,12 @@ public class UserServiceImpl implements UserService {
         if(id>0){
          User user = userRepository.findById(id)
                  .orElseThrow(()-> new RecordNotFoundException("No user with id "+id));
-         Optional<User> existingUser =userRepository.findUserByEmail(updateUser.getEmail());
-         if(!existingUser.isEmpty())
-             throw new ConflicException("Updated email is  already exist");
 
+         if(!(user.getEmail().equals(updateUser.getEmail()))) {
+             Optional<User> existingUser = userRepository.findUserByEmail(updateUser.getEmail());
+             if (!existingUser.isEmpty())
+                 throw new ConflicException("Updated email is  already exist");
+         }
          user.setEmail(updateUser.getEmail());
          user.setPassword(encoder.encode(updateUser.getPassword()));
          userRepository.save(user);
