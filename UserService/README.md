@@ -9,7 +9,7 @@ Api for user management that allow user to :
 - [API DOC](http://localhost:8080/v3/api-docs)
 - [Swagger UI](http://localhost:8080/swagger-ui/index.html)
 
-[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31722824-c1fea63c-fca4-41b5-a5fc-eaaf3b09e17e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31722824-c1fea63c-fca4-41b5-a5fc-eaaf3b09e17e%26entityType%3Dcollection%26workspaceId%3D2f8749ed-66fa-4b6a-b9ac-c7b32f4100c6)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31722824-444e0956-2942-4d55-9426-65b805c7818d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31722824-444e0956-2942-4d55-9426-65b805c7818d%26entityType%3Dcollection%26workspaceId%3D2f8749ed-66fa-4b6a-b9ac-c7b32f4100c6)
 
 ## Requirements
 - Java Development Kit (JDK) 17 or above

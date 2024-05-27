@@ -5,7 +5,7 @@ This service is todo API that allow user to manage his to-do items add,update,de
 - [SWAG-UI](http://localhost:8081/swagger-ui/index.html) 
 - [API-DOC](http://localhost:8081/v3/api-docs)
 
-[<img src="https://run.pstmn.io/button.svg" alt="Postman collection" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31722824-5ee4669c-9ef3-4698-82e9-e9c11f71fc09?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31722824-5ee4669c-9ef3-4698-82e9-e9c11f71fc09%26entityType%3Dcollection%26workspaceId%3D2f8749ed-66fa-4b6a-b9ac-c7b32f4100c6)
+[<img src="https://run.pstmn.io/button.svg" alt="Postman Collection" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31722824-444e0956-2942-4d55-9426-65b805c7818d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31722824-444e0956-2942-4d55-9426-65b805c7818d%26entityType%3Dcollection%26workspaceId%3D2f8749ed-66fa-4b6a-b9ac-c7b32f4100c6)
 
 ## Requirements
 
