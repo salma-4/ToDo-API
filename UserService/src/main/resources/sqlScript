@@ -15,12 +15,14 @@ CREATE TABLE otps (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE jwt_tokens (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    token VARCHAR(255) NOT NULL,
+CREATE TABLE jwt (
+    id INT NOT NULL AUTO_INCREMENT,
+    token VARCHAR(255),
+    token_type VARCHAR(255) DEFAULT 'BEARER',
+    created_at DATETIME,
+    expiration_date DATETIME,
     user_id BIGINT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expiration_date TIMESTAMP NOT NULL,
-    token_type VARCHAR(50),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
+

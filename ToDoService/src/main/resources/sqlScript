@@ -1,0 +1,18 @@
+CREATE SCHEMA IF NOT EXISTS todo;
+
+CREATE TABLE todo.items_details (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    description VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    priority INT,
+    status BOOLEAN NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE todo.items (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    item_details_id BIGINT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (item_details_id) REFERENCES todo.items_details(id)
+);
