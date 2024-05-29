@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
        }
        userRepository.save(newUser);
        OtpResponseDTO otp = otpService.generateOtp(newUser);
-       emailService.sendOtpEmail("salmasobhy456@gmail.com",otp.getOtp());
+       emailService.sendOtpEmail(user.getEmail(),otp.getOtp());
         return otp;
     }
 

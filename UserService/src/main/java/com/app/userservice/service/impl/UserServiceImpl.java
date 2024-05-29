@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(()-> new RecordNotFoundException("no user with emaill"));
         OtpResponseDTO otp = otpService.generateOtp(user);
-        emailService.sendOtpEmail("salmasobhy456@gmail.com",otp.getOtp());
+        emailService.sendOtpEmail(user.getEmail(),otp.getOtp());
         return "check your email for verification code";
 
     }
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
      User user=   userRepository.findUserByEmail(email)
              .orElseThrow(()-> new RecordNotFoundException("No user with email"+email));
             OtpResponseDTO otp =otpService.generateOtp(user);
-        emailService.sendOtpEmail("salmasobhy456@gmail.com",otp.getOtp());
+        emailService.sendOtpEmail(email,otp.getOtp());
         return "check your email for new verification code";
     }
 

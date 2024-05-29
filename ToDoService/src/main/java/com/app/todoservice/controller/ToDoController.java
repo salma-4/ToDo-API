@@ -70,7 +70,6 @@ public class ToDoController {
         List<ItemResponseDTO> items = todoSevice.getAllToDoItems();
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
-
     @Operation(summary = "Add new item and its details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "CREATED, item inserted")
