@@ -15,10 +15,8 @@ public class Items {
 
     @Column(name = "title", nullable = false)
     private String title;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+
+    private long userId;
 
     @OneToOne
     @JoinColumn(name = "item_details_id")

@@ -1,6 +1,7 @@
 package com.app.userservice.controller;
 
 import com.app.userservice.service.UserService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("user/token/validation")
+@RequestMapping("/app/auth/validation")
 public class ValidationController {
     private  final UserService userService;
 
@@ -24,7 +25,7 @@ public class ValidationController {
     })
     @GetMapping()
     public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String tokenHeader){
-
+        System.out.println(tokenHeader);
         String message = userService.checkTokenValidty(tokenHeader);
         return ResponseEntity.ok(message);
     }

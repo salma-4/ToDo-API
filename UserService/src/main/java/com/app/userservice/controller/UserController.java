@@ -79,6 +79,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<List<UserResponseDTO>> listAllUsers() {
         List<UserResponseDTO> response = userService.getAllUser();
+        System.out.println(response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @Operation(summary = "Find user by email")

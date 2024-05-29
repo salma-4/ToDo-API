@@ -34,6 +34,7 @@ public class JwtAutFilter extends OncePerRequestFilter {
 
             if (header == null || !header.startsWith("Bearer ")) { // no header or invalid
                 filterChain.doFilter(request, response);
+                System.out.println(header);
                 System.out.println("yalahwaaay");
                 return;
             }
